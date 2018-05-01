@@ -6,7 +6,7 @@ stage('Retrieve source code') {
     delivery = load 'repository.groovy'
     sh " cd $WORKSPACE;/bin/mkdir Build-${env.BUILD_NUMBER} "
     }
-try {
+
     stage('Maven Build') {
       docker.image('maven:3.5-jdk-8-alpine').inside {
         sh "mvn clean package -Dbuild.number=${BUILD_NUMBER}"
@@ -28,12 +28,7 @@ try {
         withCredentials([usernamePassword(credentialsId: 'docker-vsv', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
           sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
           sh 'docker push shanmukha443/new43:latest.${env.BUILD_NUMBER}'
-  
+        }
+      }
    delivery.artifactory()
-  }
-  catch (e) {
-      currentBuild.result = "FAILED"
-      throw e
-    }
 }
-
