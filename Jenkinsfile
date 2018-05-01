@@ -32,3 +32,4 @@ stage('Retrieve source code') {
       }
    delivery.artifactory()
 }
+}
