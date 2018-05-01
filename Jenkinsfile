@@ -16,6 +16,18 @@ try {
    stage('Deploy') {
         sh "/bin/cp -f $WORKSPACE/Build-${env.BUILD_NUMBER}/vsvyadav_${env.BRANCH_NAME}${env.BUILD_NUMBER}.war /opt/tomcat/apache-tomcat-9.0.7/webapps/vsvyadav.war"
     }
+    stage('Docker Build') {
+      agent any
+      steps {
+        sh 'docker build -t shanmukha443/new43:latest.${env.BUILD_NUMBER} .'
+      }
+    }
+    stage('Docker Push') {
+      agent any
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'docker-vsv', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+          sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+          sh 'docker push shanmukha443/new43:latest.${env.BUILD_NUMBER}'
   
    delivery.artifactory()
   }
