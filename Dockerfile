@@ -1,4 +1,4 @@
 FROM anapsix/alpine-java
 LABEL maintainer="shanmukha443@gmail.com"
-COPY /target/spring-petclinic-1.5.1.jar /home/spring-petclinic-1.5.1.jar
-CMD ["java","-jar","/home/spring-petclinic-1.5.1.jar"]
+COPY /target/vsvyadav_${env.BRANCH_NAME}${env.BUILD_NUMBER}.jar /root/vsvyadav_${env.BRANCH_NAME}${env.BUILD_NUMBER}.jar
+CMD ["java","-jar","/root/vsvyadav_${env.BRANCH_NAME}${env.BUILD_NUMBER}.jar]
